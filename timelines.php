@@ -59,9 +59,11 @@
 
 
         div.special{
-            background-color: red;
+            background-color: #D46A6A;
             width: 70px;
-            padding:10px;
+            padding: 10px;
+
+
 
         }
     </style>
@@ -74,7 +76,7 @@
 
 </div>
 
-<div id="legend" class="legend">
+<div id="legend" class="legend" style=" border: solid black; width: 140px; padding: 10px; margin: 20px; height: 150px;">
 
 </div>
 <br>
