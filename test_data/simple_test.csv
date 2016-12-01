@@ -1,6 +1,6 @@
 id,external_key,status_property,start,end,title,content,properties
 1,'train',100,2016-11-28T07:05.0000,2016-11-28T08:00.0000,'Train to work','Took the train to Melbourne','{"test":"a"}'
 2,'train',110,2016-11-28T09:00.0000,2016-11-28T17:00.0000,'Training','Gave training in <b>Melbourne</b><br><img src="images/melbourne.jpg" style="width:32px; height:32px;">','{"langauge":"python","classType":"meeting","className":"special"}'
-3,'train',120,2016-11-28T17:30.0000,2016-11-28T17:30.0000,'Milestone1','Milestone1 description','{"className": "class1 class2"}'
-4,'train',120,2016-11-28T18:30.0000,2016-11-28T18:30.0000,'Milestone2','Milestone2 description','{}'
+3,'train',120,2016-11-28T17:30.0000,,'Milestone1','Milestone1 description','{"className": "class1 class2"}'
+4,'train',120,2016-11-28T18:30.0000,,'Milestone2','Milestone2 description','{}'
 5,'train',120,2016-11-28T15:30.0000,2016-11-28T16:30.0000,'Milestone3','Milestone3 description','{}'

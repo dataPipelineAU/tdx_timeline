@@ -150,12 +150,14 @@ function tdxtimeline_parse_data(raw_data, settings){
     var events = [];
 
     var current_event = null;
+    console.debug(raw_data);
 
     $.each(raw_data.split("\n"), function(index, line){
         trimmed_line = line.trim();
+        line = line[0];
         if (trimmed_line.length == 0 || trimmed_line.startsWith("#")){
             // Ignore line, is either blank or a comment
-        }else if (line.startsWith(" ") || line.startswith("\t")) {
+        }else if (line[0] == " " || line[0] == "\t") {
             // This line is a property of the existing event
             // Everything to the left of the first colon (:) is the key
             // Everything to the right is the value
@@ -172,8 +174,12 @@ function tdxtimeline_parse_data(raw_data, settings){
                 // Parse date
                 value = new Date(value);
             }
-
-            current_event[key] = value;
+            if (value) {
+                current_event[key] = value;
+                if (current_event.hasOwnProperty('start') && current_event.hasOwnProperty('end') && current_event["start"].getTime() == current_event["end"].getTime()){
+                    delete current_event["end"];
+                }
+            }
 
         }else{
             // New event. We don't care about the name.

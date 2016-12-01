@@ -34,6 +34,10 @@ function save_row($db, $row)
     if ($s_stmt = $db->prepare($sql_save_data)) {
         $error = False;
         try {
+            if ($row['end'] == ""){
+                $row['end'] = null;
+            }
+
             $s_stmt->bind_param("sisssss", $row['external_key'], $row['status_property'],
                 $row['start'], $row['end'], $row['title'], $row['content'], $row['properties']);
             //$s_stmt->bind_result($computed_id, $template_id, $geojson, $date_created, $notes);

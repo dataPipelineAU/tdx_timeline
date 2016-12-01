@@ -53,8 +53,11 @@ foreach ($data as $key => $row){
     print("\n");
     print("    start: {$row['start']}");
     print("\n");
-    print("    end: {$row['end']}");
-    print("\n");
+    if ($row['end']) {
+        // The end can be null (unlike other options)
+        print("    end: {$row['end']}");
+        print("\n");
+    }
     print("    title: {$row['title']}");
     print("\n");
     print("    content: {$row['content']}");
