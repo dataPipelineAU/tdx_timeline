@@ -86,7 +86,7 @@ for ($i=1; $i<count($csvAsArray); $i++){
 }
 
 
-$new_url = "../uploader?message=Upload complete with $successes successful and $errors errors";
+$new_url = "../uploader.php?message=Upload complete with $successes successful and $errors errors";
 header('Location: ' . $new_url);
 //print_r($all_results);
 die();  // You should always call die after setting header to redirect

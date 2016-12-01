@@ -155,7 +155,7 @@ function tdxtimeline_parse_data(raw_data, settings){
         trimmed_line = line.trim();
         if (trimmed_line.length == 0 || trimmed_line.startsWith("#")){
             // Ignore line, is either blank or a comment
-        }else if (line.startsWith(" ")) {
+        }else if (line.startsWith(" ") || line.startswith("\t")) {
             // This line is a property of the existing event
             // Everything to the left of the first colon (:) is the key
             // Everything to the right is the value
