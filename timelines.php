@@ -5,9 +5,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge"/>
     <title>View :: Event Timeline</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
     <link href="css/jquery-ui.css.DONTLOAD" rel="stylesheet" type="text/css">
     <link href="css/timeline.css" rel="stylesheet" type="text/css">
-
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script type="text/javascript"> if (!window.console) console = {
             log: function () {
             }
@@ -59,6 +60,9 @@
 
         div.special{
             background-color: red;
+            width: 70px;
+            padding:10px;
+
         }
     </style>
 </head>
@@ -73,7 +77,7 @@
 <div id="legend" class="legend">
 
 </div>
-
+<br>
 <table border="0">
     <tr>
         <td id="chart_reference" colspan="10">
