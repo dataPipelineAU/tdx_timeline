@@ -25,7 +25,8 @@ $.fn.tdxTimeline = function(raw_data, options) {
         show_900s: true,
         show_non_900s: true,
         guid: guid(),
-        legend: "legend"
+        legend: "legend",
+        customStackOrder: order_events
     };
 
     var settings = $.extend({}, defaults, options);
@@ -91,6 +92,22 @@ $.fn.tdxTimeline = function(raw_data, options) {
 
     return this;
 };
+
+function order_events(item1, item2){
+    if (item1.hasOwnProperty("ordering")){
+        if (item2.hasOwnProperty("ordering")){
+            return item1 < item2;
+        }else{
+            return 1; // Items with order are more than items without
+        }
+    }else{
+        if (item2.hasOwnProperty("ordering")){
+            return 1; // Items with order are more than items without
+        }else{
+            return item1 < item2;
+        }
+    }
+}
 
 
 function guid() {
