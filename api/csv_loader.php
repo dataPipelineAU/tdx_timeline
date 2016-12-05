@@ -5,93 +5,54 @@
  * Date: 27/11/16
  * Time: 4:18 PM
  */
+require_once("parse_csv.php");
+// Path of the main folder, i.e. index.php
+define ('SITE_ROOT', realpath(dirname(dirname(__FILE__))));
 
-require_once("database.php");
+$upload_dir = "uploads/";
 
-$db = get_connection();
-
-/*
-
-events table
-------------
-id: autoinc
-external_key: external identifier, passed into timeline.php
-status_property: status number of event
-start: datetime
-end: datetime, nullable (if null, event is a single point in time)
-title: Human readable name
-content: Description or other content
-properties: JSON with any other properties in it
-
-*/
+$ps_debug = true;
+$ps_site_id = "my_site";
+$ps_run_id = 1001;
+$ps_class_name = "tdx_timeline";
+$ps_param_dodebug = true;
+$ps_done_url = "../uploader.php?message=Upload completed";
+$ps_site_path = "Unknown";
 
 
-function save_row($db, $row)
-{
-    $result = array();
-    $sql_save_data = "INSERT INTO `events` (`external_key`, `status_property`, `start`, `end`, `title`, `content`, `properties`) VALUES (?, ?, ?, ?, ?, ?, ?)";
+/** saves a file to a given location
+ * @param $file
+ * @return mixed
+ */
+function save_file($tmp_filename, $filename){
+    global $upload_dir;
+    // Get just the name of the file, not the directory. Add csv to it
+    $just_filename = basename($filename) . ".csv";
+    // Create new filename in the upload directory
+    $new_filename =  SITE_ROOT . "/" . $upload_dir . $just_filename;
 
-    if ($s_stmt = $db->prepare($sql_save_data)) {
-        $error = False;
-        try {
-            if ($row['end'] == ""){
-                $row['end'] = null;
-            }
-
-            $s_stmt->bind_param("sisssss", $row['external_key'], $row['status_property'],
-                $row['start'], $row['end'], $row['title'], $row['content'], $row['properties']);
-            //$s_stmt->bind_result($computed_id, $template_id, $geojson, $date_created, $notes);
-            if (!$s_stmt->execute()) {
-                $result['error'] = 1;
-                $result['note'] = htmlspecialchars($s_stmt->error);
-            }
-        } catch (Exception $e) {
-            $result['error'] = 1;
-            $result['note'] = $e->getMessage();
-        }
-        // Got to here -- everything seemed to work
-        if (!$error) {
-            $result['error'] = 0;
-            $result['id'] = $db->insert_id;
-            $result['row'] = $row;
-        }
-    } else {
-        $result['error'] = 1;
-        $result['note'] = htmlspecialchars($db->error);
-    }
-
-    return $result;
-}
-
-function _str_getcsv($file){
-    return str_getcsv($file, null, "'");
-}
-
-$tmpName = $_FILES['csv']['tmp_name'];
-$csvAsArray = array_map('_str_getcsv', file($tmpName));
-
-//print_r($csvAsArray);
-
-$errors = 0;
-$successes = 0;
-$all_results = array();
-
-for ($i=1; $i<count($csvAsArray); $i++){
-    $row = array_combine($csvAsArray[0], $csvAsArray[$i]);
-
-    $current_result = save_row($db, $row);
-
-    if ($current_result['error'] > 0){
-        $errors += 1;
+    $successful = move_uploaded_file($tmp_filename,$new_filename);
+    if ($successful) {
+        return $new_filename;
     }else{
-        $successes += 1;
+        echo 'Here is some more debugging info:';
+        print_r($_FILES);
+        throw new Exception("Could not move uploaded file");
     }
-    $all_results[] = $current_result;
 }
 
+$filename = save_file($_FILES['csv']['tmp_name'], $_FILES['csv']['name']);
 
-$new_url = "../uploader.php?message=Upload complete with $successes successful and $errors errors";
-header('Location: ' . $new_url);
-//print_r($all_results);
-die();  // You should always call die after setting header to redirect
-// Funny (depressing?) story on why: http://thedailywtf.com/articles/WellIntentioned-Destruction
+$c = new cl_ii_tdx_timeline_v1();
+
+if ($c->pf_a100_is_my_format($ps_class_name, $filename, $ps_debug, $ps_site_id, $ps_run_id)){
+    $c->pf_a200_do_format($ps_class_name, true, $filename, $ps_param_dodebug, $ps_site_id, $ps_run_id, $filename, $ps_done_url, $ps_site_path);
+    // Redirect user to a page and say that the file was scucessful
+    header('Location: ' . $ps_done_url);
+    //print_r($all_results);
+    die();  // You should always call die after setting header to redirect
+    // Funny (depressing?) story on why: http://thedailywtf.com/articles/WellIntentioned-Destruction
+}else{
+    die("Incorrect format for file");
+}
+
