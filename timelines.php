@@ -83,7 +83,7 @@
 <table border="0">
     <tr>
         <td id="chart_reference" colspan="10">
-            Chart Reference: Chart:thw:101
+            Chart Reference: Chart:timeline:161206_<?php echo $_GET['external_key'] ?>
             <br style="clear:both;"/>
         </td>
     </tr>
