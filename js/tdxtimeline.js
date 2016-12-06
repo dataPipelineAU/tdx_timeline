@@ -187,12 +187,26 @@ function tdxtimeline_parse_data(raw_data, settings){
             }
             if (key == "description" && !current_event.content){
                 current_event["content"] = value;
-            }else if (key == "start" || key == "end"){
+            }else if (key == "start"){
                 // Parse date
                 value = new Date(value);
+            }else if (key == "end"){
+                if (current_event.hasOwnProperty("open") && current_event['open']){
+                    // The event is open ended and this has already been set. Set end date to "Now"
+                    value = new Date();
+                }else{
+                    // Event is open ended (or we don't know that yet) so just set date as appropriate
+                    value = new Date(value);
+                }
+            }else if (key == "open"){
+                // Event is open ended. If we set an end date, reset it now
+                if (current_event.hasOwnProperty("end")){
+                    current_event["end"] = new Date();
+                }
             }
             if (value) {
                 current_event[key] = value;
+                // If start and end are the same, then don't add end
                 if (current_event.hasOwnProperty('start') && current_event.hasOwnProperty('end') && current_event["start"].getTime() == current_event["end"].getTime()){
                     delete current_event["end"];
                 }
