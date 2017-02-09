@@ -77,11 +77,12 @@ $.fn.tdxTimeline = function(raw_data, options) {
         }
         if (d["start"]){
             s_date = new Date(d["start"]);
-            event_detail += "Time: " + s_date.format("dd/m/yy HH:MM") + ", ";
+            console.log(s_date);
+            event_detail += "Time: " + s_date.toGMTString() + ", ";
         }
         if (d["end"]){
             s_date = new Date(d["end"]);
-            event_detail += " to: " + s_date.format("dd/m/yy HH:MM") + ", ";
+            event_detail += " to: " + s_date.toGMTString() + ", ";
         }
         if (d["order_status"]) {
             event_detail += "Status: " + d["order_status"] + " ";
@@ -94,6 +95,7 @@ $.fn.tdxTimeline = function(raw_data, options) {
 };
 
 function order_events(item1, item2){
+
     if (item1.hasOwnProperty("ordering")){
         if (item2.hasOwnProperty("ordering")){
             return item1 < item2;
@@ -243,6 +245,8 @@ function compute_date_range(data){
         }
         if (cur_event['end'] && (a_daterange['max'] == null || cur_event['end'] > a_daterange['max'])){
             a_daterange['max'] = new Date(cur_event['end'].getTime());
+        }else if (cur_event['start'] > a_daterange['max']){
+            a_daterange['max'] = new Date(cur_event['start'].getTime());
         }
     }
     return a_daterange;
