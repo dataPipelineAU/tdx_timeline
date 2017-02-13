@@ -2,7 +2,8 @@ tdx_timeline,v1,2016,,,,,,
 id,external_key,event_key,status_property,start,end,title,content,properties
 1,'swimlane','item1',100,2017-02-09T11:30.0000,2017-02-09T11:30.0000,'Item 1','Item 1 description','{"test":"a", "group": "BC"}'
 2,'swimlane','item2',110,2017-02-09T11:30.0000,2017-02-09T11:30.0000,'Item 2','Item 2 description','{"group":"ML", "langauge":"python","classType":"meeting","className":"special"}'
-3,'swimlane','item3',120,2017-02-09T11:50.0000,2017-02-09T11:50.0000,'Item 3','Item 3 description','{"className": "class1 class2", "group":"tdX"}'
+3,'swimlane','item3',120,2017-02-09T11:50.0000,2017-02-09T11:50.0000,'Item 3','Item 3 description','{"className": "class1 class2", "group":"tdX", "swimlane_excluded": false}'
+7,'swimlane','item7',120,2017-02-09T11:52.0000,2017-02-09T11:52.0000,'Random Item','Nobody should point to me','{"className": "class1 class2", "group":"3pl", "swimlane_excluded":true}'
 4,'swimlane','item4',120,2017-02-09T12:00.0000,2017-02-09T12:00.0000,'Item 4','Item 4 description','{"group":"BC"}'
 5,'swimlane','item5',120,2017-02-09T12:30.0000,2017-02-09T12:30.0000,'Item 5','Item 5 description','{"group":"3pl", "open":true}'
 6,'swimlane','item6',120,2017-02-09T13:00.0000,2017-02-09T13:00.0000,'Item 6','Item 6 description','{"group":"3pl", "open":true}'
