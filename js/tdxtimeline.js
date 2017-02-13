@@ -183,7 +183,7 @@ function tdxtimeline_parse_data(raw_data, settings){
             // Both are stripped of leading and trailing whitespace
             var s = trimmed_line.split(/:(.+)?/);
             var key = s[0].trim();
-            var value = "None";
+            var value = false;
             if (s.length > 1 && s[1]) {
                 value = s[1].trim();
             }
@@ -206,7 +206,7 @@ function tdxtimeline_parse_data(raw_data, settings){
                     current_event["end"] = new Date();
                 }
             }
-            if (value) {
+            if (true) {
                 current_event[key] = value;
                 // If start and end are the same, then don't add end
                 if (current_event.hasOwnProperty('start') && current_event.hasOwnProperty('end') && current_event["start"].getTime() == current_event["end"].getTime()){

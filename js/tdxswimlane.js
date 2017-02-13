@@ -29,7 +29,9 @@ $.fn.tdxSwimlane = function(raw_data, options) {
         guid: guid(),
         legend: "legend",
         customStackOrder: order_events,
-        groupsOrder: order_groups
+        groupsOrder: order_groups,
+        showMajorLabels: false,
+        showMinorLabels: false
     };
 
     var settings = $.extend({}, defaults, options);
@@ -129,21 +131,40 @@ function tdxswimlane_convert_to_swimlane(timeline_data){
         var row = timeline_data[i];
 
         if (i < timeline_data.length - 1){
-            var next_row = timeline_data[i+1];
-            var next_event_spot = "right";
-            if (row['group'] != next_row['group']){
-                // Events are not on the same group, is the next one up or down?
-                // We use the same ordering function as the timeline for this
-                var next_event_down = order_groups(row['group'], next_row['group']);
+            var next_row = null;
+            // Find the next row that has a false (or non-existant) value for "swimlane_exluded"
+            for (j=1; j< timeline_data.length - i; j++){
+                // Value must exist and be True to be excluded. i.e. true by default
+                if (has(timeline_data[i+j], "swimlane_excluded") && (timeline_data[i+j]["swimlane_excluded"])){
+                    continue; // Search next row
+                }
+                console.debug(row['content']);
+                console.debug("i:" + i);
+                console.debug("j:" + j);
+                console.debug(has(timeline_data[i+j], "swimlane_excluded"));
+                console.debug(timeline_data[i+j]["swimlane_excluded"]);
+                next_row = timeline_data[i+j];
+                break;
+            }
+            if (next_row) {
+                // If the CURRENT row is to be excluded from the swimlane direction, don't give it a direction too
+                if (!(has(timeline_data[i], "swimlane_excluded") && (timeline_data[i ]["swimlane_excluded"]))) {
+                    var next_event_spot = "right";
+                    if (row['group'] != next_row['group']) {
+                        // Events are not on the same group, is the next one up or down?
+                        // We use the same ordering function as the timeline for this
+                        var next_event_down = order_groups(row['group'], next_row['group']);
 
-                if (next_event_down){
-                    next_event_spot = "down";
-                }else{
-                    next_event_spot = "up";
+                        if (next_event_down) {
+                            next_event_spot = "down";
+                        } else {
+                            next_event_spot = "up";
+                        }
+                    }
+
+                    row['content'] += ' <i class="fa fa-arrow-' + next_event_spot + '" aria-hidden="true"></i>';
                 }
             }
-
-            row['content'] += ' <i class="fa fa-arrow-' + next_event_spot + '" aria-hidden="true"></i>';
         }
 
         swimlane_data.push(row);
